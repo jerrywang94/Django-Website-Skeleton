@@ -1,0 +1,86 @@
+{% load staticfiles %} {% load i18n widget_tweaks %}
+
+<!-- Registration HTML -->
+
+<link rel="stylesheet" href="{% static 'js/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'js/bootstrap-theme.min.css' %}">
+<script src="{% static 'js/jquery-3.2.1.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<p style="margin-right:30px; margin-top:10px; float:right; font-size:25px">
+<a href="/">Back to Home Page</a>
+</p>
+<h1 style="padding-left:10px;padding-top:10px">Register</h1>
+
+<div class="btmBorder"></div><br>
+
+<form method="post" style="padding-left:50px">
+    {% csrf_token %}
+    <div style="width:400px">
+
+
+        {% for field in form %}
+        {% if field.name != 'username' %}
+        {% if field.name == 'uType' %}
+        {% if field.errors %}
+        <div class='form has-error'>
+            <label class='checkbox control-label'>{{ field.label }}</label>
+            <label class='checkbox boxPadding'>{{ field }}</label>
+            <span class='help-block'>
+{% for error in field.errors %}{{ error }}{% endfor %}
+</span>
+        </div>
+        {% else %}
+        <div class='form'>
+            <label class='checkbox control-label'>{{ field.label }}</label>
+            <label class='checkbox boxPadding'>{{ field }}</label>
+        </div>
+        {% endif %}
+        {% elif field.name == 'password1' %}
+        {% if field.errors %}
+        <div class='form-group has-error'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }}
+                <span class='help-block'>
+{% for error in field.errors %}{{ error }}{% endfor %}
+</span>
+            </div>
+        </div>
+        {% else %}
+        <div class='form-group'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }} {% if field.help_text %}
+                <p class='help-block'><small><ul><li>Your password can&#39;t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can&#39;t be a commonly used password.</li><li>Your password can&#39;t be entirely numeric.</li></ul></small></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% else %} {% if field.errors %}
+        <div class='form-group has-error'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }}
+                <span class='help-block'>
+{% for error in field.errors %}{{ error }}{% endfor %}
+</span>
+            </div>
+        </div>
+        {% else %}
+        <div class='form-group'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }} {% if field.help_text %}
+                <p class='help-block'><small>{{ field.help_text }}</small></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %} {% endif %} {% else %}
+        <input type="hidden" name="username" value="placeholder"> {% endif %} {% endfor %}
+    </div>
+    <br>
+    <div style="padding-left:50px">
+	<button type="submit">Sign up</button><br><br>
+</div>
+</form>

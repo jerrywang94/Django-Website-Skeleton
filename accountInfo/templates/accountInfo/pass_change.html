@@ -1,0 +1,54 @@
+{% load staticfiles %} {% load i18n widget_tweaks %}
+
+<!-- Password change HTML -->
+
+<link rel="stylesheet" href="{% static 'js/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'js/bootstrap-theme.min.css' %}">
+<script src="{% static 'js/jquery-3.2.1.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<p style="margin-right:30px; margin-top:10px; float:right; font-size:25px">
+<a href="/">Back to Home Page</a>
+</p>
+<h1 style="padding-left:10px;padding-top:10px">Password change</h1>
+
+<div class="btmBorder"></div><br>
+
+<form method="post" style="padding-left:50px">
+    {% csrf_token %}
+    <div style="width:400px">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+{% for field in form %}
+    {% if field.errors %}
+        <div class='form-group has-error'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }}
+                <span class='help-block'>
+{% for error in field.errors %}{{ error }}{% endfor %}
+</span>
+            </div>
+        </div>
+        {% else %}
+        <div class='form-group'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }} {% if field.help_text %}
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% endfor %}
+        <p class='help-block'><small><ul><li>Your password can&#39;t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can&#39;t be a commonly used password.</li><li>Your password can&#39;t be entirely numeric.</li></ul></small></p>
+    <button type="submit">Save changes</button>
+</div>
+</form>

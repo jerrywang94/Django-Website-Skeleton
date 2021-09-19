@@ -1,0 +1,50 @@
+{% load staticfiles %} {% load i18n widget_tweaks %}
+
+<!-- Login HTML -->
+
+<link rel="stylesheet" href="{% static 'js/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'js/bootstrap-theme.min.css' %}">
+<script src="{% static 'js/jquery-3.2.1.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<p style="margin-right:30px; margin-top:10px; float:right; font-size:25px">
+    <a href="/">Back to Home Page</a>
+</p>
+<h1 style="padding-left:10px;padding-top:10px">Login</h1>
+
+<div class="btmBorder"></div><br>
+
+<form method="post">
+    {% csrf_token %} {% if form.non_field_errors %}
+    <ul class='form-errors'>
+        {% for error in form.non_field_errors %}
+        <b>{{ error }}</b> {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div style="padding-left:50px;width:400px">
+        {% for field in form %} {% if field.errors %}
+        <div class='form-group has-error'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }}
+                <span class='help-block'>
+{% for error in field.errors %}{{ error }}{% endfor %}
+</span>
+            </div>
+        </div>
+        {% else %}
+        <div class='form-group'>
+            <label class='control-label' for='id_{{ field.name }}'>{{ field.label }}</label>
+            <div>
+                {{ field|attr:'class:form-control' }} {% if field.help_text %}
+                <p class='help-block'><small>{{ field.help_text }}</small></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %} {% endfor %}
+        <small><a href="/user/password/reset">Forgot your password?</a></small>
+        <br><br>
+        <button type="submit">Login</button>
+    </div>
+</form>
